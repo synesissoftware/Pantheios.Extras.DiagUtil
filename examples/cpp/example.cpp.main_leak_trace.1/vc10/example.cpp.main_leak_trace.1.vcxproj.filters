@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{d1d038e8-12a1-4783-9434-3aaf540ff92f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{85e19071-e760-455f-a110-868388fffb14}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\STLSoft Header Files">
+      <UniqueIdentifier>{6f7df2ac-bc77-403f-bd1b-6c49646cf3aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\STLSoft Header Files\STLSoft">
+      <UniqueIdentifier>{6bd5dbe2-bbe7-4487-9fd5-6b2846d962e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\STLSoft Header Files\PlatformSTL">
+      <UniqueIdentifier>{b1e11bba-3dae-45ff-b3f2-b0f3e0efe156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\STLSoft Header Files\WinSTL">
+      <UniqueIdentifier>{90fa73c2-fc89-48d1-aa01-49f5e3f76d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pantheios Header Files">
+      <UniqueIdentifier>{38cc87b6-adab-4048-89c4-baf7c9457464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pantheios Header Files\Pantheios::Extras">
+      <UniqueIdentifier>{8cd07c6a-7d1f-4c34-9b98-d037ad4b64f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil">
+      <UniqueIdentifier>{070d7582-b289-4a74-b78d-a1cf09d53113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4691ed30-f6d3-4dd8-801f-fd7d514bfeb5}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\example.cpp.main_leak_trace.1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\implicit_link.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(STLSOFT)\include\stlsoft\internal\cccap\msvc.h">
+      <Filter>Header Files\STLSoft Header Files\STLSoft</Filter>
+    </ClInclude>
+    <ClInclude Include="$(STLSOFT)\include\stlsoft\internal\cccap\obsolete.h">
+      <Filter>Header Files\STLSoft Header Files\STLSoft</Filter>
+    </ClInclude>
+    <ClInclude Include="$(STLSOFT)\include\stlsoft\stlsoft.h">
+      <Filter>Header Files\STLSoft Header Files\STLSoft</Filter>
+    </ClInclude>
+    <ClInclude Include="$(STLSOFT)\include\platformstl\platformstl.h">
+      <Filter>Header Files\STLSoft Header Files\PlatformSTL</Filter>
+    </ClInclude>
+    <ClInclude Include="$(STLSOFT)\include\winstl\winstl.h">
+      <Filter>Header Files\STLSoft Header Files\WinSTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil\internal\common.h">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil\internal\common.hpp">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil.hpp">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil\main_leak_trace.h">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil\main_leak_trace.hpp">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\pantheios\extras\diagutil\internal\stlsoft.h">
+      <Filter>Header Files\Pantheios Header Files\Pantheios::Extras\Pantheios::Extras::DiagUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\quality\contract.h">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\severity\levels.hpp">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\internal\generated\log_functions.h">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\pantheios.h">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\internal\stock_levels.hpp">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(PANTHEIOS_ROOT)\include\pantheios\internal\string_encoding.h">
+      <Filter>Header Files\Pantheios Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
