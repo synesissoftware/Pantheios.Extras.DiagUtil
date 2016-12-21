@@ -5,11 +5,11 @@
  *              Pantheios.Extras.DiagUtil library.
  *
  * Created:     6th January 2011
- * Updated:     17th September 2015
+ * Updated:     21st December 2016
  *
  * Home:        http://www.pantheios.org/
  *
- * Copyright (c) 2011-2015, Matthew Wilson and Synesis Software
+ * Copyright (c) 2011-2016, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,9 +54,9 @@
 
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MAJOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MINOR    0
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 4
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     4
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MINOR    1
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 0
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     1
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -71,8 +71,8 @@
  * Compatibility checks
  */
 
-#if PANTHEIOS_VER < 0x010001d7
-# error Pantheios.Extras.DiagUtil required Pantheios 1.0.1 beta 215, or later
+#if PANTHEIOS_VER < 0x010001d9
+# error Pantheios.Extras.DiagUtil required Pantheios 1.0.1 beta 217, or later
 #endif /* !PANTHEIOS_NO_NAMESPACE */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -99,13 +99,14 @@
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1_ALPHA_1        0x00010101
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1_ALPHA_2        0x00010102
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1                0x000101ff
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_2_BETA_1         0x00010281
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MAJOR                 0
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MINOR                 1
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION              1
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION              2
 
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER                       PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER                       PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_2_BETA_1
 
 /* /////////////////////////////////////////////////////////////////////////
  * Inclusion
@@ -120,3 +121,4 @@
 #endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON */
 
 /* ///////////////////////////// end of file //////////////////////////// */
+

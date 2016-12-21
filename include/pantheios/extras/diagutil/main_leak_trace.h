@@ -4,11 +4,11 @@
  * Purpose:     Definition of the pantheios_extras_diagutil_main_leak_trace_invoke() function.
  *
  * Created:     28th December 2010
- * Updated:     10th September 2015
+ * Updated:     21st December 2016
  *
  * Home:        http://www.pantheios.org/
  *
- * Copyright (c) 2011-2015, Matthew Wilson and Synesis Software
+ * Copyright (c) 2011-2016, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,8 +55,8 @@
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MINOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_REVISION 2
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_EDIT     5
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_REVISION 3
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_EDIT     6
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -69,6 +69,10 @@
     defined(_DEBUG)
 # include <crtdbg.h>
 #endif /* _MSC_VER && _DEBUG */
+
+#ifdef __cplusplus
+# include <exception>
+#endif /* __cplusplus */
 
 /* /////////////////////////////////////////////////////////////////////////
  * API Functions
@@ -126,15 +130,15 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
 
     _CrtMemCheckpoint(&memState);
 
-#ifdef __cplusplus
+# ifdef __cplusplus
     try
     {
-#endif /* __cplusplus */
+# endif /* __cplusplus */
 
         r = pfnMain(argc, argv);
 
         _CrtMemDumpAllObjectsSince(&memState);
-#ifdef __cplusplus
+# ifdef __cplusplus
     }
     catch(std::exception&)
     {
@@ -142,7 +146,7 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
 
         throw;
     }
-#endif /* __cplusplus */
+# endif /* __cplusplus */
 
     return r;
 
