@@ -12,12 +12,15 @@ else
   DefaultMakeCmd=make
 fi
 MakeCmd=${SIS_CMAKE_MAKE_COMMAND:-${SIS_CMAKE_COMMAND:-$DefaultMakeCmd}}
+ProjectNameFile="$Dir/.sis/project_name.txt"
+ProjectName=$(tr -d '[:space:]' < "$ProjectNameFile")
 
 Configuration=Release
 ExamplesDisabled=0
 MSVC_MT=0
 MinGW="${MinGW:=0}"
 RunMake=0
+STLSoftDirGiven=
 TestingDisabled=0
 VerboseMakefile=0
 
@@ -56,11 +59,16 @@ while [[ $# -gt 0 ]]; do
 
       RunMake=1
       ;;
+    --stlsoft-root-dir|-s)
+
+      shift
+      STLSoftDirGiven=$1
+      ;;
     --help)
 
-      [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
-      cat << EOF
-Creates/reinitialises the CMake build script(s)
+        [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
+        cat << EOF
+Creates/reinitialises the CMake build script(s) for ${ProjectName}
 
 $ScriptPath [ ... flags/options ... ]
 
@@ -84,7 +92,9 @@ Flags/options:
 
     -T
     --disable-testing
-        disables building of tests (by setting BUILD_TESTING=OFF)
+        disables building of tests (by setting BUILD_TESTING=OFF). Unless
+        testing is disabled the STLSoft and xTests libraries will be
+        required to be available to CMake
 
     --mingw
         uses explicitly the "MinGW Makefiles" generator, and defaults the
@@ -97,6 +107,12 @@ Flags/options:
     -m
     --run-make
         executes make after a successful running of CMake
+
+    -s <dir>
+    --stlsoft-root-dir <dir>
+        specifies the STLSoft root-directory, which will be passed to CMake
+        as the variable STLSOFT, and which will override the environment
+        variable STLSOFT (if present)
 
 
     standard flags:
@@ -131,12 +147,14 @@ echo "Executing CMake (in ${CMakeDir})"
 
 if [ $ExamplesDisabled -eq 0 ]; then CMakeBuildExamplesFlag="ON" ; else CMakeBuildExamplesFlag="OFF" ; fi
 if [ $MSVC_MT -eq 0 ]; then CMakeMsvcMtFlag="OFF" ; else CMakeMsvcMtFlag="ON" ; fi
+if [ -z $STLSoftDirGiven ]; then CMakeSTLSoftVariable="" ; else CMakeSTLSoftVariable="-DSTLSOFT=$STLSoftDirGiven/" ; fi
 if [ $TestingDisabled -eq 0 ]; then CMakeBuildTestingFlag="ON" ; else CMakeBuildTestingFlag="OFF" ; fi
 if [ $VerboseMakefile -eq 0 ]; then CMakeVerboseMakefileFlag="OFF" ; else CMakeVerboseMakefileFlag="ON" ; fi
 
 if [ $MinGW -ne 0 ]; then
 
   cmake \
+    $CMakeSTLSoftVariable \
     -DBUILD_EXAMPLES:BOOL=$CMakeBuildExamplesFlag \
     -DBUILD_TESTING:BOOL=$CMakeBuildTestingFlag \
     -DCMAKE_BUILD_TYPE=$Configuration \
@@ -147,6 +165,7 @@ if [ $MinGW -ne 0 ]; then
 else
 
   cmake \
+    $CMakeSTLSoftVariable \
     -DBUILD_EXAMPLES:BOOL=$CMakeBuildExamplesFlag \
     -DBUILD_TESTING:BOOL=$CMakeBuildTestingFlag \
     -DCMAKE_BUILD_TYPE=$Configuration \
@@ -179,4 +198,3 @@ exit $status
 
 
 # ############################## end of file ############################# #
-
