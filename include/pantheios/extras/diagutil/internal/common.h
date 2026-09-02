@@ -5,11 +5,11 @@
  *          Pantheios.Extras.DiagUtil library.
  *
  * Created: 6th January 2011
- * Updated: 25th October 2024
+ * Updated: 2nd September 2026
  *
  * Home:    http://www.pantheios.org/
  *
- * Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
+ * Copyright (c) 2019-2026, Matthew Wilson and Synesis Information Systems
  * Copyright (c) 2011-2019, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
@@ -58,7 +58,7 @@
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MINOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 0
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     2
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     3
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
@@ -104,13 +104,14 @@
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1_ALPHA_2        0x00010102
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_1                0x000101ff
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_2_BETA_1         0x00010281
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_ALPHA_1        0x00010341
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MAJOR                 0
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MINOR                 1
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION              2
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION              3
 
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER                       PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_2_BETA_1
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER                       PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_ALPHA_1
 
 
 /* /////////////////////////////////////////////////////////////////////////
