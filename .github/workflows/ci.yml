@@ -100,7 +100,7 @@ jobs:
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-make
 
-      - name: Install runtime dependencies (STLSoft + b64 + Pantheios)
+      - name: Install runtime dependencies (STLSoft + Pantheios)
         shell: bash
         run: |
           set -euxo pipefail
@@ -146,11 +146,10 @@ jobs:
             fi
           }
 
+          # b64 is optional for Pantheios; omit it here so the smoke matches
+          # Pantheios's own install-smoke (STLSoft-only runtime deps).
           git clone --depth 1 https://github.com/synesissoftware/STLSoft "${RUNNER_TEMP}/stlsoft-src"
           cmake_configure_and_install "${RUNNER_TEMP}/stlsoft-src" "${RUNNER_TEMP}/stlsoft-build"
-
-          git clone --depth 1 https://github.com/synesissoftware/b64 "${RUNNER_TEMP}/b64-src"
-          cmake_configure_and_install "${RUNNER_TEMP}/b64-src" "${RUNNER_TEMP}/b64-build"
 
           git clone --depth 1 https://github.com/synesissoftware/Pantheios "${RUNNER_TEMP}/pantheios-src"
           cmake_configure_and_install "${RUNNER_TEMP}/pantheios-src" "${RUNNER_TEMP}/pantheios-build"

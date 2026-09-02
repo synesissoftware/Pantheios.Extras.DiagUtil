@@ -110,9 +110,10 @@ The primary choice for installation is by use of **CMake**.
       $ cc -c main.c
       ```
 
-   Consumers that use **CMake** may instead depend on the installed package
-   (find **STLSoft** before **Pantheios**, as in **Pantheios** / **b64**
-   install-smoke consumers):
+   Consumers that use **CMake** may instead depend on the installed package.
+   Find **STLSoft** before **Pantheios** (same order as **Pantheios**
+   install-smoke). **b64** is optional for **Pantheios** — find it only if
+   that **Pantheios** install was built against it:
 
    ```cmake
    find_package(STLSoft REQUIRED)

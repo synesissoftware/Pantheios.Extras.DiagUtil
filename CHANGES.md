@@ -13,8 +13,8 @@
   **CHANGES.md** / **AUTHORS.md** / **FAQ.md**;
 * Added GitHub Actions CI (**ci.yml** / **ci-cell.yml**) with install
   smoke, including Pantheios stack dependencies;
-* Install-smoke consumer finds **STLSoft** before **Pantheios** (matching
-  **Pantheios** / **b64** install-smoke);
+* Install-smoke omits optional **b64** (as **Pantheios** install-smoke does)
+  and finds **STLSoft** before **Pantheios**;
 
 
 ## 0.1.2 - historical
