@@ -5,7 +5,7 @@
 # Purpose:  Top-level CMake lists file for Pantheios.Extras.DiagUtil
 #
 # Created:  23rd October 2024
-# Updated:  25th October 2024
+# Updated:  2nd September 2026
 #
 # ######################################################################## #
 
@@ -39,15 +39,15 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 
 # handle version number
-set(RX_PROJ_TAG "${PROJECT_NAME_UPPER}")
+set(RX_PROJ_TAG "PANTHEIOS_EXTRAS_DIAGUTIL")
 set(RX_WS "[ \t]")
 file(READ "${CMAKE_SOURCE_DIR}/include/pantheios/extras/diagutil/internal/common.h" _header_file)
 string(REGEX MATCH "#${RX_WS}*define${RX_WS}+_?${RX_PROJ_TAG}_VER_MAJOR${RX_WS}+([0-9]+)" MAJOR_DUMMY ${_header_file})
 set(_VERSION_MAJOR ${CMAKE_MATCH_1})
 string(REGEX MATCH "#${RX_WS}*define${RX_WS}+_?${RX_PROJ_TAG}_VER_MINOR${RX_WS}+([0-9]+)" MINOR_DUMMY ${_header_file})
 set(_VERSION_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "#${RX_WS}*define${RX_WS}+_?${RX_PROJ_TAG}_VER_REVISION${RX_WS}+([0-9]+)" PATCH_DUMMY ${_header_file})
-set(_VERSION_PATCH ${CMAKE_MATCH_1})
+string(REGEX MATCH "#${RX_WS}*define${RX_WS}+_?${RX_PROJ_TAG}_VER_(PATCH|REVISION)${RX_WS}+([0-9]+)" PATCH_DUMMY ${_header_file})
+set(_VERSION_PATCH ${CMAKE_MATCH_2})
 
 # set project version number here
 set(PROJECT_VERSION_MAJOR ${_VERSION_MAJOR})
@@ -71,6 +71,18 @@ if(MSVC)
 		set(CMAKE_C_STANDARD 90)
 		set(CMAKE_CXX_STANDARD 98)
 	endif()
+
+	if(MSVC_USE_MT)
+
+		set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+	endif(MSVC_USE_MT)
+else(MSVC)
+
+	if(MSVC_USE_MT)
+
+		# this here just to absorb warning about not using `MSVC_USE_MT` (to
+		# enable **prepare_cmake.sh** to be simple)
+	endif(MSVC_USE_MT)
 endif(MSVC)
 
 
@@ -86,9 +98,15 @@ include(TargetMacros)
 
 
 # ################################################
-# dependencies and options
+# dependencies, features, and options
+
+# ######################################
+# options
 
 option(BUILD_EXAMPLES "Build examples" ON)
+
+option(BUILD_TESTING "Build tests" ON)
+
 
 # ######################################
 # dependencies
@@ -137,12 +155,12 @@ find_package(b64 QUIET)
 
 if(b64_FOUND)
 
-    message("-- CMake package b64 found (version ${b64_VERSION})")
+	message("-- CMake package b64 found (version ${b64_VERSION})")
 
-    add_compile_definitions(HAS_b64)
+	add_compile_definitions(HAS_b64)
 else(b64_FOUND)
 
-    add_compile_definitions(PANTHEIOS_NO_B64)
+	add_compile_definitions(PANTHEIOS_NO_B64)
 endif(b64_FOUND)
 
 
@@ -179,7 +197,7 @@ endif()
 
 if(BUILD_TESTING)
 
-	set(xTests_REQUIRED_VERSION_ 0.25)
+	set(xTests_REQUIRED_VERSION_ 0.26.3)
 
 	find_package(xTests ${xTests_REQUIRED_VERSION_} REQUIRED)
 
@@ -248,18 +266,14 @@ endif(BUILD_TESTING)
 
 
 # ##########################################################
-# install
-
-
-# ##########################################################
 # export
 
-set(EXPORT_NAME ${PROJECT_NAME})
+set(EXPORT_NAME ${PROJECT_NAME_LOWER})
 
 configure_package_config_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/${EXPORT_NAME}-config.cmake.in
 	${CMAKE_CURRENT_BINARY_DIR}/cmake/${EXPORT_NAME}-config.cmake
-	INSTALL_DESTINATION ${LIB_INSTALL_DIR}/${EXPORT_NAME}/cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/${EXPORT_NAME}/cmake
 )
 
 write_basic_package_version_file(
@@ -270,11 +284,11 @@ write_basic_package_version_file(
 
 export(EXPORT project-targets
 	FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${EXPORT_NAME}-targets.cmake"
-	# NAMESPACE "${PROJECT_NAME}::"
+	NAMESPACE "${PROJECT_NAME}::"
 )
 
 install(EXPORT project-targets
-	# NAMESPACE "${PROJECT_NAME}::"
+	NAMESPACE "${PROJECT_NAME}::"
 	FILE "${EXPORT_NAME}-targets.cmake"
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${EXPORT_NAME}
 )
@@ -296,8 +310,7 @@ install(
 # ##########################################################
 # completion
 
-message(NOTICE "Generating CMake build scripts for ${PROJECT_NAME} ${PROJECT_VERSION}, for C${CMAKE_C_STANDARD} C++${CMAKE_CXX_STANDARD}")
+message(NOTICE "Generating CMake build scripts for ${PROJECT_NAME} ${PROJECT_VERSION}, for C${CMAKE_C_STANDARD} C++${CMAKE_CXX_STANDARD}, with build type ${CMAKE_BUILD_TYPE}")
 
 
 # ############################## end of file ############################# #
-
