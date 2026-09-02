@@ -1,0 +1,283 @@
+name: CI cell
+
+on:
+  workflow_call:
+    inputs:
+      cell-id:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      c-compiler:
+        required: true
+        type: string
+      cpp-compiler:
+        required: true
+        type: string
+      build-type:
+        required: false
+        type: string
+        default: Release
+
+jobs:
+  build:
+    name: Build (${{ inputs.cell-id }})
+    runs-on: ${{ inputs.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Clang (Ubuntu)
+        if: runner.os == 'Linux' && inputs.c-compiler == 'clang'
+        run: sudo apt-get update && sudo apt-get install -y clang
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && inputs.c-compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-make
+
+      - name: Install dependencies (STLSoft + shwild + xTests + b64 + Pantheios)
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          DEPS="${RUNNER_TEMP}/sis-deps"
+          mkdir -p "$DEPS"
+
+          cmake_configure_and_install() {
+            local src="$1"
+            local build="$2"
+
+            if [ "${{ inputs.c-compiler }}" = "cl" ]; then
+              cmake -S "$src" -B "$build" \
+                -DCMAKE_DISABLE_FIND_PACKAGE_MFC=TRUE \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --config "${{ inputs.build-type }}" --parallel
+              cmake --install "$build" --config "${{ inputs.build-type }}"
+            elif [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+              export PATH="/mingw64/bin:$PATH"
+              cmake -S "$src" -B "$build" -G "MinGW Makefiles" \
+                -DCMAKE_BUILD_TYPE="${{ inputs.build-type }}" \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --parallel 2
+              cmake --install "$build"
+            else
+              cmake -S "$src" -B "$build" \
+                -DCMAKE_BUILD_TYPE="${{ inputs.build-type }}" \
+                -DCMAKE_C_COMPILER="${{ inputs.c-compiler }}" \
+                -DCMAKE_CXX_COMPILER="${{ inputs.cpp-compiler }}" \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --parallel
+              cmake --install "$build"
+            fi
+          }
+
+          # 1. STLSoft
+          git clone --depth 1 https://github.com/synesissoftware/STLSoft "${RUNNER_TEMP}/stlsoft-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/stlsoft-src" "${RUNNER_TEMP}/stlsoft-build"
+
+          # 2. shwild
+          git clone --depth 1 https://github.com/synesissoftware/shwild "${RUNNER_TEMP}/shwild-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/shwild-src" "${RUNNER_TEMP}/shwild-build"
+
+          # 3. xTests
+          git clone --depth 1 https://github.com/synesissoftware/xTests "${RUNNER_TEMP}/xtests-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/xtests-src" "${RUNNER_TEMP}/xtests-build"
+
+          # 4. b64 (optional for Pantheios / DiagUtil, installed for a complete stack)
+          git clone --depth 1 https://github.com/synesissoftware/b64 "${RUNNER_TEMP}/b64-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/b64-src" "${RUNNER_TEMP}/b64-build"
+
+          # 5. Pantheios
+          git clone --depth 1 https://github.com/synesissoftware/Pantheios "${RUNNER_TEMP}/pantheios-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/pantheios-src" "${RUNNER_TEMP}/pantheios-build"
+
+      - name: Configure
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "cl" ]; then
+            cmake -B build -S . \
+              -DCMAKE_DISABLE_FIND_PACKAGE_MFC=TRUE \
+              -DCMAKE_PREFIX_PATH="${RUNNER_TEMP}/sis-deps" \
+              -DBUILD_EXAMPLES=ON \
+              -DBUILD_TESTING=ON
+          elif [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+            cmake -B build -G "MinGW Makefiles" \
+              -DCMAKE_BUILD_TYPE="${{ inputs.build-type }}" \
+              -DCMAKE_C_COMPILER=gcc \
+              -DCMAKE_CXX_COMPILER=g++ \
+              -DCMAKE_PREFIX_PATH="${RUNNER_TEMP}/sis-deps" \
+              -DBUILD_EXAMPLES=ON \
+              -DBUILD_TESTING=ON
+          else
+            cmake -B build -S . \
+              -DCMAKE_BUILD_TYPE="${{ inputs.build-type }}" \
+              -DCMAKE_C_COMPILER="${{ inputs.c-compiler }}" \
+              -DCMAKE_CXX_COMPILER="${{ inputs.cpp-compiler }}" \
+              -DCMAKE_PREFIX_PATH="${RUNNER_TEMP}/sis-deps" \
+              -DBUILD_EXAMPLES=ON \
+              -DBUILD_TESTING=ON
+          fi
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "cl" ]; then
+            cmake --build build --config "${{ inputs.build-type }}" --parallel
+          elif [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+            cmake --build build --parallel 2
+          else
+            cmake --build build --parallel
+          fi
+
+      - name: Upload build tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: sis-build-${{ inputs.cell-id }}
+          path: build
+          retention-days: 1
+
+  run-examples:
+    name: Examples (${{ inputs.cell-id }})
+    needs: build
+    runs-on: ${{ inputs.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && inputs.c-compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-toolchain
+
+      - name: Download build tree
+        uses: actions/download-artifact@v4
+        with:
+          name: sis-build-${{ inputs.cell-id }}
+          path: build
+
+      - name: Run examples
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+          fi
+          SIS_CMAKE_BUILD_DIR="${{ github.workspace }}/build" ./run_all_examples.sh -M
+
+  test-unit:
+    name: Unit tests (${{ inputs.cell-id }})
+    needs: build
+    runs-on: ${{ inputs.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && inputs.c-compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-toolchain
+
+      - name: Download build tree
+        uses: actions/download-artifact@v4
+        with:
+          name: sis-build-${{ inputs.cell-id }}
+          path: build
+
+      - name: Run unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+          fi
+          SIS_CMAKE_BUILD_DIR="${{ github.workspace }}/build" ./run_all_unit_tests.sh -M --unit-only
+
+  test-component:
+    name: Component tests (${{ inputs.cell-id }})
+    needs: build
+    runs-on: ${{ inputs.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && inputs.c-compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-toolchain
+
+      - name: Download build tree
+        uses: actions/download-artifact@v4
+        with:
+          name: sis-build-${{ inputs.cell-id }}
+          path: build
+
+      - name: Run component tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+          fi
+          SIS_CMAKE_BUILD_DIR="${{ github.workspace }}/build" ./run_all_unit_tests.sh -M --component-only
+
+  test-scratch:
+    name: Scratch tests (${{ inputs.cell-id }})
+    needs: build
+    continue-on-error: true
+    runs-on: ${{ inputs.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && inputs.c-compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-toolchain
+
+      - name: Download build tree
+        uses: actions/download-artifact@v4
+        with:
+          name: sis-build-${{ inputs.cell-id }}
+          path: build
+
+      - name: Run scratch tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.c-compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+          fi
+          SIS_CMAKE_BUILD_DIR="${{ github.workspace }}/build" ./run_all_scratch_tests.sh -M

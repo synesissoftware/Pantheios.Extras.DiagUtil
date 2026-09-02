@@ -1,0 +1,277 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - boilerplate
+      - idiomatic
+      - rc1
+      - rc2
+      - rc3
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  cell:
+    name: CI (${{ matrix.id }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: linux-clang
+            os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - id: linux-gcc
+            os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - id: macos-clang
+            os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - id: macos-gcc
+            os: macos-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - id: windows-cl
+            os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - id: windows-mingw
+            os: windows-latest
+            c_compiler: mingw
+            cpp_compiler: g++
+    uses: ./.github/workflows/ci-cell.yml
+    with:
+      cell-id: ${{ matrix.id }}
+      os: ${{ matrix.os }}
+      c-compiler: ${{ matrix.c_compiler }}
+      cpp-compiler: ${{ matrix.cpp_compiler }}
+      build-type: Release
+    secrets: inherit
+
+  install-smoke:
+    name: Install smoke (${{ matrix.os }}, ${{ matrix.c_compiler }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: windows-latest
+            c_compiler: mingw
+            cpp_compiler: g++
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Clang (Ubuntu)
+        if: runner.os == 'Linux' && matrix.c_compiler == 'clang'
+        run: sudo apt-get update && sudo apt-get install -y clang
+
+      - name: Setup MSYS2 MinGW
+        if: runner.os == 'Windows' && matrix.c_compiler == 'mingw'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-make
+
+      - name: Install runtime dependencies (STLSoft + Pantheios)
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          DEPS="${RUNNER_TEMP}/sis-deps"
+          mkdir -p "$DEPS"
+          echo "DEPS=$DEPS" >> "$GITHUB_ENV"
+
+          cmake_configure_and_install() {
+            local src="$1"
+            local build="$2"
+
+            if [ "${{ matrix.c_compiler }}" = "cl" ]; then
+              cmake -S "$src" -B "$build" \
+                -DCMAKE_DISABLE_FIND_PACKAGE_MFC=TRUE \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --config "${{ env.BUILD_TYPE }}" --parallel
+              cmake --install "$build" --config "${{ env.BUILD_TYPE }}"
+            elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+              export PATH="/mingw64/bin:$PATH"
+              cmake -S "$src" -B "$build" -G "MinGW Makefiles" \
+                -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --parallel 2
+              cmake --install "$build"
+            else
+              cmake -S "$src" -B "$build" \
+                -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+                -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+                -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+                -DCMAKE_INSTALL_PREFIX="$DEPS" \
+                -DCMAKE_PREFIX_PATH="$DEPS" \
+                -DBUILD_EXAMPLES=OFF \
+                -DBUILD_TESTING=OFF
+              cmake --build "$build" --parallel
+              cmake --install "$build"
+            fi
+          }
+
+          # b64 is optional for Pantheios; omit it here so the smoke matches
+          # Pantheios's own install-smoke (STLSoft-only runtime deps).
+          git clone --depth 1 https://github.com/synesissoftware/STLSoft "${RUNNER_TEMP}/stlsoft-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/stlsoft-src" "${RUNNER_TEMP}/stlsoft-build"
+
+          git clone --depth 1 https://github.com/synesissoftware/Pantheios "${RUNNER_TEMP}/pantheios-src"
+          cmake_configure_and_install "${RUNNER_TEMP}/pantheios-src" "${RUNNER_TEMP}/pantheios-build"
+
+      - name: Configure
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.c_compiler }}" = "cl" ]; then
+            cmake -B build -S . \
+              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DBUILD_EXAMPLES=OFF \
+              -DBUILD_TESTING=OFF
+          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+            cmake -B build -G "MinGW Makefiles" \
+              -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+              -DCMAKE_C_COMPILER=gcc \
+              -DCMAKE_CXX_COMPILER=g++ \
+              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DBUILD_EXAMPLES=OFF \
+              -DBUILD_TESTING=OFF
+          else
+            cmake -B build -S . \
+              -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+              -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+              -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DBUILD_EXAMPLES=OFF \
+              -DBUILD_TESTING=OFF
+          fi
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.c_compiler }}" = "cl" ]; then
+            cmake --build build --config "${{ env.BUILD_TYPE }}" --parallel
+          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+            cmake --build build --parallel 2
+          else
+            cmake --build build --parallel
+          fi
+
+      - name: Install
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREFIX="${RUNNER_TEMP}/install-prefix"
+          echo "INSTALL_PREFIX=$PREFIX" >> "$GITHUB_ENV"
+          if [ "${{ matrix.c_compiler }}" = "cl" ]; then
+            cmake --install build --config "${{ env.BUILD_TYPE }}" --prefix "$PREFIX"
+          else
+            cmake --install build --prefix "$PREFIX"
+          fi
+
+      - name: Verify install tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil.h"
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil.hpp"
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil/main_leak_trace.h"
+          test -f "${INSTALL_PREFIX}/lib/cmake/pantheios.extras.diagutil/pantheios.extras.diagutil-config.cmake"
+
+      - name: Configure and run install smoke consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONSUMER="${RUNNER_TEMP}/consumer"
+          mkdir -p "$CONSUMER"
+          cat > "$CONSUMER/CMakeLists.txt" <<'EOF'
+          cmake_minimum_required(VERSION 3.20)
+          project(diagutil_install_smoke C CXX)
+          find_package(STLSoft REQUIRED)
+          find_package(Pantheios REQUIRED)
+          find_package(pantheios.extras.diagutil REQUIRED)
+          add_executable(consumer consumer.c)
+          target_link_libraries(consumer PRIVATE
+              Pantheios.Extras.DiagUtil::Pantheios.Extras.DiagUtil
+              Pantheios::Pantheios.core)
+          set_target_properties(consumer PROPERTIES LINKER_LANGUAGE CXX)
+          EOF
+          cat > "$CONSUMER/consumer.c" <<'EOF'
+          #include <pantheios/extras/diagutil.h>
+          #include <stdlib.h>
+
+          static int
+          program(int argc, char** argv)
+          {
+              ((void)argc);
+              ((void)argv);
+
+              return EXIT_SUCCESS;
+          }
+
+          int main(int argc, char** argv)
+          {
+              return pantheios_extras_diagutil_main_leak_trace_invoke(
+                  argc, argv, program);
+          }
+          EOF
+          PREFIX_PATH="${INSTALL_PREFIX};${DEPS}"
+          if [ "${{ matrix.c_compiler }}" = "cl" ]; then
+            cmake -S "$CONSUMER" -B consumer-build \
+              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+            cmake --build consumer-build --config "${{ env.BUILD_TYPE }}" --parallel
+            consumer-build/${{ env.BUILD_TYPE }}/consumer.exe
+          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+            export PATH="/mingw64/bin:$PATH"
+            cmake -S "$CONSUMER" -B consumer-build -G "MinGW Makefiles" \
+              -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+            cmake --build consumer-build --parallel 2
+            consumer-build/consumer.exe
+          else
+            cmake -S "$CONSUMER" -B consumer-build \
+              -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+              -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+              -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+            cmake --build consumer-build --parallel
+            consumer-build/consumer
+          fi

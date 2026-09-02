@@ -1,14 +1,15 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:        pantheios/extras/diagutil/internal/stlsoft.h
+ * File:    pantheios/extras/diagutil/internal/stlsoft.h
  *
- * Purpose:     "Entry point" include into the STLSoft libraries.
+ * Purpose: "Entry point" include into the STLSoft libraries.
  *
- * Created:     6th January 2011
- * Updated:     21st December 2016
+ * Created: 6th January 2011
+ * Updated: 2nd September 2026
  *
- * Home:        http://www.pantheios.org/
+ * Home:    http://www.pantheios.org/
  *
- * Copyright (c) 2011-2016, Matthew Wilson and Synesis Software
+ * Copyright (c) 2019-2026, Matthew Wilson and Synesis Information Systems
+ * Copyright (c) 2011-2019, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,61 +47,56 @@
 #ifndef PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT
 #define PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Version information
+ * version information
  */
 
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT_MAJOR       1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT_MINOR       0
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT_REVISION    3
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT_EDIT        3
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT_EDIT        4
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Includes
+ * includes
  */
 
 #ifndef STLSOFT_INCL_STLSOFT_H_STLSOFT
 # include <stlsoft/stlsoft.h>
 #endif /* !STLSOFT_INCL_STLSOFT_H_STLSOFT */
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Compatibility checks
+ * compatibility checks
  */
 
 /* STLSoft 1.9 check */
 
 #if !defined(_STLSOFT_VER) || \
-    _STLSOFT_VER < 0x010983ff
-# error Requires STLSoft 1.9.131, or later. (www.stlsoft.org)
+    _STLSOFT_VER < 0x010b0153
+
+# error Requires STLSoft 1.11.1 (alpha 19), or later
 #endif /* STLSoft version */
-
-/* STLSoft 1.10 check */
-
-#if _STLSOFT_VER < 0x010a0000 && \
-    defined(_STLSOFT_1_10_VER) && \
-    _STLSOFT_1_10_VER < 0x010a0113
-
-# error If you're using STLSoft 1.10 alpha you must use at least version 1.10.1 alpha 19
-
-#endif /* STLSoft 1.10.1 alpha 1 - alpha 8 */
 
 #if defined(__cplusplus) && \
     defined(_STLSOFT_NO_NAMESPACE)
+
 # error Pantheios.Extras.DiagUtil requires that STLSoft`s namespace has not been disabled in C++ compilation
 #endif /* _STLSOFT_NO_NAMESPACE */
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Inclusion
+ * inclusion
  */
 
 #ifdef STLSOFT_CF_PRAGMA_ONCE_SUPPORT
 # pragma once
 #endif /* STLSOFT_CF_PRAGMA_ONCE_SUPPORT */
 
-/* ////////////////////////////////////////////////////////////////////// */
-
 #endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_STLSOFT */
 
 /* ///////////////////////////// end of file //////////////////////////// */
+

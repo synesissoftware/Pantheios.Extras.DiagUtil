@@ -1,19 +1,10 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:        example.cpp.main_leak_trace.1.cpp
+ * File:    example.cpp.main_leak_trace.1.cpp
  *
- * Purpose:     Implementation file for the example.cpp.main_leak_trace.1 library.
+ * Purpose: Implementation file for the example.cpp.main_leak_trace.1 library.
  *
- * Created:     6th January 2011
- * Updated:     10th September 2015
- *
- * Status:      Wizard-generated
- *
- * License:     (Licensed under the Synesis Software Open License)
- *
- *              Copyright (c) 2011-2015, Synesis Software Pty Ltd.
- *              All rights reserved.
- *
- *              www:        http://www.synesis.com.au/software
+ * Created: 6th January 2011
+ * Updated: 25th October 2024
  *
  * ////////////////////////////////////////////////////////////////////// */
 
@@ -30,9 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ////////////////////////////////////////////////////////////////////// */
 
-int main0(int argc, char** argv)
+/* /////////////////////////////////////////////////////////////////////////
+ * main()
+ */
+
+int main0(int argc, char* argv[])
 {
 #ifdef _DEBUG
     malloc(1);
@@ -42,12 +36,17 @@ int main0(int argc, char** argv)
     malloc(10000);
 #endif /* _DEBUG */
 
+    ((void)&argc);
+    ((void)&argv);
+
     return EXIT_SUCCESS;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     return ::pantheios::extras::diagutil::main_leak_trace::invoke(argc, argv, main0);
 }
 
+
 /* ///////////////////////////// end of file //////////////////////////// */
+
