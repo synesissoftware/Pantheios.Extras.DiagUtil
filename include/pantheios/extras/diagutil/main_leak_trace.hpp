@@ -1,14 +1,15 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:        pantheios/extras/diagutil/main_leak_trace.hpp
+ * File:    pantheios/extras/diagutil/main_leak_trace.hpp
  *
- * Purpose:     Definition of the pantheios::extras::diagutil::main_leak_trace::invoke() function.
+ * Purpose: Definition of the pantheios::extras::diagutil::main_leak_trace::invoke() function.
  *
- * Created:     28th December 2010
- * Updated:     10th September 2015
+ * Created: 28th December 2010
+ * Updated: 25th October 2024
  *
- * Home:        http://www.pantheios.org/
+ * Home:    http://www.pantheios.org/
  *
- * Copyright (c) 2011-2015, Matthew Wilson and Synesis Software
+ * Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
+ * Copyright (c) 2011-2019, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,25 +50,27 @@
 #define PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE
 
 /* /////////////////////////////////////////////////////////////////////////
- * Version information
+ * version information
  */
 
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE_MAJOR      1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE_MINOR      1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE_REVISION   2
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE_EDIT       5
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE_EDIT       6
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Includes
+ * includes
  */
 
 #include <pantheios/extras/diagutil/main_leak_trace.h>
 #include <pantheios/extras/diagutil/internal/common.hpp>
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Namespace
+ * namespace
  */
 
 /** The <strong>Pantheios</strong> root namespace - <code>pantheios</code>.
@@ -98,6 +101,7 @@ namespace diagutil
 namespace main_leak_trace
 {
 
+
 /* /////////////////////////////////////////////////////////////////////////
  * API Functions
  */
@@ -112,14 +116,14 @@ namespace main_leak_trace
  *
 \htmlonly
 <pre>
-  int main0(int argc, char** argv)
+  int main0(int argc, char* argv[])
   {
     new char[1];
 
     return EXIT_SUCCESS;
   }
 
-  int main(int argc, char** argv)
+  int main(int argc, char* argv[])
   {
       return pantheios::extras::diagutil::main_leak_trace::invoke(argc, argv, main0);
   }
@@ -144,7 +148,7 @@ int
 invoke(
     int                 argc
 ,   char**              argv
-,   int (STLSOFT_CDECL* pfnMain)(int, char**)
+,   int (STLSOFT_CDECL* pfnMain)(int, char*[])
 )
 {
     return pantheios_extras_diagutil_main_leak_trace_invoke(argc, argv, pfnMain);
@@ -159,12 +163,13 @@ invoke(
 ,   int (STLSOFT_CDECL* pfnMain)(int, char const* const*)
 )
 {
-    return pantheios_extras_diagutil_main_leak_trace_invoke(argc, const_cast<char**>(argv), reinterpret_cast<int (STLSOFT_CDECL*)(int, char**)>(pfnMain));
+    return pantheios_extras_diagutil_main_leak_trace_invoke(argc, const_cast<char**>(argv), reinterpret_cast<int (STLSOFT_CDECL*)(int, char*[])>(pfnMain));
 }
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Namespace
+ * namespace
  */
 
 } // namespace main_leak_trace
@@ -173,16 +178,16 @@ invoke(
 } // namespace extras
 } // namespace pantheios
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Inclusion
+ * inclusion
  */
 
 #ifdef STLSOFT_CF_PRAGMA_ONCE_SUPPORT
 # pragma once
 #endif /* STLSOFT_CF_PRAGMA_ONCE_SUPPORT */
 
-/* ////////////////////////////////////////////////////////////////////// */
-
 #endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_HPP_MAIN_LEAK_TRACE */
 
 /* ///////////////////////////// end of file //////////////////////////// */
+

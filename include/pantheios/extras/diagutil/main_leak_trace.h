@@ -1,14 +1,15 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:        pantheios/extras/diagutil/main_leak_trace.h
+ * File:    pantheios/extras/diagutil/main_leak_trace.h
  *
- * Purpose:     Definition of the pantheios_extras_diagutil_main_leak_trace_invoke() function.
+ * Purpose: Definition of the pantheios_extras_diagutil_main_leak_trace_invoke() function.
  *
- * Created:     28th December 2010
- * Updated:     21st December 2016
+ * Created: 28th December 2010
+ * Updated: 25th October 2024
  *
- * Home:        http://www.pantheios.org/
+ * Home:    http://www.pantheios.org/
  *
- * Copyright (c) 2011-2016, Matthew Wilson and Synesis Software
+ * Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
+ * Copyright (c) 2011-2019, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,19 +49,20 @@
 #ifndef PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE
 #define PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Version information
+ * version information
  */
 
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MINOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_REVISION 3
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_EDIT     6
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_REVISION 4
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_EDIT     7
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
- * Includes
+ * includes
  */
 
 #include <pantheios/extras/diagutil/internal/common.h>
@@ -88,14 +90,14 @@
  *
 \htmlonly
 <pre>
-  int main0(int argc, char** argv)
+  int main0(int argc, char* argv[])
   {
     malloc(1);
 
     return EXIT_SUCCESS;
   }
 
-  int main(int argc, char** argv)
+  int main(int argc, char* argv[])
   {
       return pantheios_extras_diagutil_main_leak_trace_invoke(argc, argv, main0);
   }
@@ -119,7 +121,7 @@ int
 pantheios_extras_diagutil_main_leak_trace_invoke(
     int                 argc
 ,   char**              argv
-,   int (STLSOFT_CDECL* pfnMain)(int, char**)
+,   int (STLSOFT_CDECL* pfnMain)(int, char*[])
 )
 {
 #if defined(_MSC_VER) && \
@@ -140,7 +142,7 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
         _CrtMemDumpAllObjectsSince(&memState);
 # ifdef __cplusplus
     }
-    catch(std::exception&)
+    catch (std::exception&)
     {
         _CrtMemDumpAllObjectsSince(&memState);
 
@@ -157,16 +159,16 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
 #endif /* _MSC_VER && _DEBUG */
 }
 
+
 /* /////////////////////////////////////////////////////////////////////////
- * Inclusion
+ * inclusion
  */
 
 #ifdef STLSOFT_CF_PRAGMA_ONCE_SUPPORT
 # pragma once
 #endif /* STLSOFT_CF_PRAGMA_ONCE_SUPPORT */
 
-/* ////////////////////////////////////////////////////////////////////// */
-
 #endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE */
 
 /* ///////////////////////////// end of file //////////////////////////// */
+

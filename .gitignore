@@ -1,51 +1,152 @@
 
 # directories (by name)
 
-ideas/
+/.git-old/
+/.vs/
 
-Debug/
-Debug Multithreaded/
+.svn/
+
+/_build/
+/_internal/
+
+/bin/
+/ipch/
+/lib/
+
+/doc/
+/dox/
+/ideas/
+/releases/
+/scratch/
+/temp/
+
+/include/b64/
+/include/shwild/
+/include/xcontract/
+/include/xcover/
+/include/xtests/
+
+/src/b64/
+/src/shwild/
+/src/xcontract/
+/src/xcover/
+/src/xtests/
+
 Debug Multithreaded DLL/
-Unicode Debug/
-Unicode Debug Multithreaded/
-Unicode Debug Multithreaded DLL/
-Release/
-Release Multithreaded/
+Debug Multithreaded Dll/
+Debug Multithreaded pseudoUNIX/
+Debug Multithreaded pseudoUnix/
+Debug Multithreaded/
+Debug/
+DebugDLLUNIX/
+DebugDll/
+DebugMt/
+DebugUnix/
 Release Multithreaded DLL/
-Unicode Release/
-Unicode Release Multithreaded/
+Release Multithreaded Dll/
+Release Multithreaded pseudoUNIX/
+Release Multithreaded pseudoUnix/
+Release Multithreaded/
+Release/
+ReleaseDLLUNIX/
+ReleaseDll/
+ReleaseMt/
+ReleaseUnix/
+Unicode Debug Multithreaded DLL/
+Unicode Debug Multithreaded/
+Unicode Debug/
 Unicode Release Multithreaded DLL/
+Unicode Release Multithreaded/
+Unicode Release/
+
+vc9/
+
+Win32/
+x64/
+
 
 # directories (by pattern)
 
+
 # files (by name)
 
+.DS_Store
+.ruby-version
+.svnignore
+.svnignore-at-root
+.update_deps
+
+clasp.vc9.sln
+
 list_changes.cmd
+prepare.cmd
+sh.exe.stackdump
+update_deps.cmd
+
+build/makefile.tmpl
+build/makefile.tools.xml
+
 
 # files (by pattern)
 
 *~
+*.???_obj
 *.a
 *.app
+*.aps
+*.b64
+*.bak
+*.chm
+*.d
 *.dll
+*.dsp
 *.dylib
 *.exe
 *.gch
+*.idb
 *.ilk
+*.iobj
+*.ipch
+*.ipdb
+*.la
+*.lai
 *.lib
+*.lo
+*.log
 *.ncb
 *.o
 *.obj
 *.opensdf
+*.opt
+*.org
 *.out
 *.pch
 *.pdb
-*.sdf
+*.rar
+*.res
 *.sbr
 *.scc
+*.sdf
+*.slo
 *.so
 *.suo
 *.swp
+*.tlog
+*.tmp
+*.unsuccessfulbuild
 *.vcproj*.user
 *.vcxproj*.user
+*.xcuserstate
+*.zip
+
+RCa0*
+RCb0*
+
+*.vc71.sln
+*.vc8.sln
+*.vc9.sln
+
+build/*.tmplgen
+build/*.tmpl
+build/*.tools.xml
 
