@@ -4,11 +4,11 @@
  * Purpose: Definition of the pantheios_extras_diagutil_main_leak_trace_invoke() function.
  *
  * Created: 28th December 2010
- * Updated: 25th October 2024
+ * Updated: 2nd September 2026
  *
  * Home:    http://www.pantheios.org/
  *
- * Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
+ * Copyright (c) 2019-2026, Matthew Wilson and Synesis Information Systems
  * Copyright (c) 2011-2019, Matthew Wilson and Synesis Software
  * All rights reserved.
  *

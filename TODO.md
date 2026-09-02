@@ -10,7 +10,7 @@
 
 ## Functional improvements
 
-* \<none>
+* Consider additional leak-trace backends beyond MSVC `_DEBUG` CRT;
 
 
 ## Performance improvements
@@ -20,7 +20,7 @@
 
 ## Packaging improvements
 
-* \<none>
+* Add GitHub Actions CI (**ci.yml** / **ci-cell.yml**) in the AtExit style;
 
 
 <!-- ########################### end of file ########################### -->
