@@ -157,7 +157,6 @@ else
     || (cd ->/dev/null ; exit 1)
 fi
 
-
 status=0
 
 if [ $RunMake -ne 0 ]; then
