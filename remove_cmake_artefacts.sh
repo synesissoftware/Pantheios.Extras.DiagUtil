@@ -56,10 +56,8 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --help)
 
+      [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
       cat << EOF
-Pantheios.Extras.DiagUtil is a small, header-only C and C++ library that supplements Pantheios by providing diagnostics facilities
-Copyright (c) 2019-2024, Matthew Wilson and Synesis Information Systems
-Copyright (c) 2002-2019, Matthew Wilson and Synesis Software
 Removes all known CMake artefacts
 
 $ScriptPath [ ... flags/options ... ]
