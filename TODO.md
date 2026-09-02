@@ -20,7 +20,7 @@
 
 ## Packaging improvements
 
-* Add GitHub Actions CI (**ci.yml** / **ci-cell.yml**) in the AtExit style;
+* \<none>
 
 
 <!-- ########################### end of file ########################### -->

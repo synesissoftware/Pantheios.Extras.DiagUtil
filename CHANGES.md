@@ -11,6 +11,8 @@
 * Added **.sis/project_name.txt** and aligned helper scripts; documented
   the library in **README.md** / **INSTALL.md** / **NEWS.md** /
   **CHANGES.md** / **AUTHORS.md** / **FAQ.md**;
+* Added GitHub Actions CI (**ci.yml** / **ci-cell.yml**) with install
+  smoke, including Pantheios stack dependencies;
 
 
 ## 0.1.2 - historical

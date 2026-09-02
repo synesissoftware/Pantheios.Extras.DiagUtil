@@ -7,6 +7,7 @@ Header-only **C** and **C++** library in the **Pantheios.Extras** namespace that
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![GitHub release](https://img.shields.io/github/v/release/synesissoftware/Pantheios.Extras.DiagUtil.svg)](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/latest)
 [![Last Commit](https://img.shields.io/github/last-commit/synesissoftware/Pantheios.Extras.DiagUtil)](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/commits/master)
+[![CI](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/actions/workflows/ci.yml/badge.svg)](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/actions/workflows/ci.yml)
 
 
 ## Table of Contents <!-- omit in toc -->
