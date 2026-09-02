@@ -226,6 +226,7 @@ jobs:
           cat > "$CONSUMER/CMakeLists.txt" <<'EOF'
           cmake_minimum_required(VERSION 3.20)
           project(diagutil_install_smoke C CXX)
+          find_package(STLSoft REQUIRED)
           find_package(Pantheios REQUIRED)
           find_package(pantheios.extras.diagutil REQUIRED)
           add_executable(consumer consumer.c)

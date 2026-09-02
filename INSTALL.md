@@ -110,12 +110,17 @@ The primary choice for installation is by use of **CMake**.
       $ cc -c main.c
       ```
 
-   Consumers that use **CMake** may instead depend on the installed package:
+   Consumers that use **CMake** may instead depend on the installed package
+   (find **STLSoft** before **Pantheios**, as in **Pantheios** / **b64**
+   install-smoke consumers):
 
    ```cmake
+   find_package(STLSoft REQUIRED)
+   find_package(Pantheios REQUIRED)
    find_package(pantheios.extras.diagutil REQUIRED)
    target_link_libraries(your_target PRIVATE
-       Pantheios.Extras.DiagUtil::Pantheios.Extras.DiagUtil)
+       Pantheios.Extras.DiagUtil::Pantheios.Extras.DiagUtil
+       Pantheios::Pantheios.core)
    ```
 
 
