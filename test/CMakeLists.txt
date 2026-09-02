@@ -25,13 +25,10 @@ if(_BUILD_AS_WIN32)
 endif(_BUILD_AS_WIN32)
 
 
-if(MSVC)
+if((MSVC) AND (MSVC_VERSION GREATER_EQUAL 1914))
 
-	if(MSVC_VERSION GREATER_EQUAL 1914)
-
-		add_compile_options("/Zc:__cplusplus")
-	endif()
-endif(MSVC)
+	add_compile_options("/Zc:__cplusplus")
+endif()
 
 
 set(GCC_WARN_NO_cxx11_long_long "")
@@ -41,9 +38,8 @@ if(X_CMAKE_CXX_FULLSTANDARD LESS 2011)
 endif()
 
 
-add_subdirectory(c)
-add_subdirectory(cpp)
+add_subdirectory(unit)
+add_subdirectory(scratch)
 
 
 # ############################## end of file ############################# #
-

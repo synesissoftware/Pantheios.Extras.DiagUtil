@@ -47,8 +47,14 @@ function(define_automated_test_program program_name entry_point_source_name)
 
 	target_link_libraries(${program_name}
 		PRIVATE
+			Pantheios.Extras.DiagUtil
+			Pantheios::Pantheios.core
 			$<$<STREQUAL:${STLSOFT_INCLUDE_DIR},>:STLSoft::STLSoft>
 			$<IF:$<VERSION_LESS:${xTests_VERSION},"0.23">,xTests::xTests.core,xTests::core>
+	)
+
+	set_target_properties(${program_name} PROPERTIES
+		LINKER_LANGUAGE CXX
 	)
 
 	if(WIN32)
@@ -71,6 +77,7 @@ function(define_example_program program_name entry_point_source_name)
 
 	target_link_libraries(${program_name}
 		PRIVATE
+			Pantheios.Extras.DiagUtil
 			Pantheios::Pantheios.core
 			$<$<STREQUAL:${STLSOFT_INCLUDE_DIR},>:STLSoft::STLSoft>
 	)
@@ -88,4 +95,3 @@ endfunction(define_example_program)
 
 
 # ############################## end of file ############################# #
-

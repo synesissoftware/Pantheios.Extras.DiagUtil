@@ -54,6 +54,15 @@ perf_test/
 
 scripts/internal/
 
+/include/shwild/
+/include/xcontract/
+/include/xcover/
+/include/xtests/
+/src/shwild/
+/src/xcontract/
+/src/xcover/
+/src/xtests/
+
 Debug Multithreaded DLL/
 Debug Multithreaded Dll/
 Debug Multithreaded pseudoUNIX/

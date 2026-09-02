@@ -220,6 +220,28 @@ include(GNUInstallDirs)
 # targets
 
 # ################################################
+# custom definitions
+
+if(UNIX)
+
+	set(_BUILD_AS_UNIX 1)
+
+	message("-- Operating system Unix")
+else(UNIX)
+
+	if(WIN32)
+
+		set(_BUILD_AS_WIN32 1)
+
+		message("-- Operating system Windows")
+	else(WIN32)
+
+		message("-- Operating system unknown")
+	endif(WIN32)
+endif(UNIX)
+
+
+# ################################################
 # main library
 
 add_library(Pantheios.Extras.DiagUtil INTERFACE)
@@ -256,9 +278,7 @@ if(BUILD_TESTING)
 
 	message("-- enabled building of tests ...")
 
-#[====[
 	add_subdirectory(test)
-#]====]
 else(BUILD_TESTING)
 
 	message("-- disabled building of tests - define BUILD_TESTING to enable")
