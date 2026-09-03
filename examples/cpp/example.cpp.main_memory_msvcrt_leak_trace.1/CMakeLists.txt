@@ -1,0 +1,1 @@
+define_example_program(example.cpp.main_memory_msvcrt_leak_trace.1 example.cpp.main_memory_msvcrt_leak_trace.1.cpp)

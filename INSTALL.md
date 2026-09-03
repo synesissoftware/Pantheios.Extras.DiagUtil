@@ -98,7 +98,7 @@ The primary choice for installation is by use of **CMake**.
 
       int main(int argc, char** argv)
       {
-          return pantheios_extras_diagutil_main_leak_trace_invoke(
+          return pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(
               argc, argv, program);
       }
       ```
