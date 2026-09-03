@@ -1,2 +1,1 @@
-# SIS:AUTO_GENERATED: Remove this line if you edit the file, otherwise it will be overwritten
-add_subdirectory(example.cpp.main_leak_trace.1)
+add_subdirectory(example.cpp.main_memory_msvcrt_leak_trace.1)
