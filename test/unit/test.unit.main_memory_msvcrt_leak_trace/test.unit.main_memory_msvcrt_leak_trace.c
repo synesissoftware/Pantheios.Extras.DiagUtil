@@ -7,12 +7,13 @@
  *          pantheios_extras_diagutil_main_leak_trace_invoke() alias.
  *
  * Created: 2nd September 2026
- * Updated: 4th September 2026
+ * Updated: 8th September 2026
  *
  * ////////////////////////////////////////////////////////////////////// */
 
 
-#include <pantheios/extras/diagutil.h>
+#include <pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h>
+#include <pantheios/extras/diagutil/main_leak_trace.h>
 
 #include <xtests/xtests.h>
 
