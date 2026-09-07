@@ -10,6 +10,7 @@
 
 ## Functional improvements
 
+* Add **main_memory_api_leak_trace** for alloc (+ optional realloc) + free;
 * Consider additional leak-trace backends beyond MSVC `_DEBUG` CRT;
 
 
@@ -20,7 +21,7 @@
 
 ## Packaging improvements
 
-* \<none>
+* Remove all **implicit_link.c** / **implicit_link.cpp** files;
 
 
 <!-- ########################### end of file ########################### -->

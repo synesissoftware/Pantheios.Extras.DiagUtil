@@ -1,6 +1,12 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
+## 0.1.3-alpha2 - 4th September 2026
+
+* Renamed the MSVCRT CRT leak-trace API to **main_memory_msvcrt_leak_trace** (`pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke`, `pantheios::extras::diagutil::main_memory_msvcrt_leak_trace::invoke`);
+* Kept **main_leak_trace** as a deprecated compatibility alias;
+
+
 ## 0.1.3-alpha1 - 2nd September 2026
 
 * Aligned the **CMake** contract with peer Extras/freelibs (`MSVC_USE_MT`

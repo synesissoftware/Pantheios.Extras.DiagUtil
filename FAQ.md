@@ -39,8 +39,12 @@ headers and **CMake** package files.
 
 Include **pantheios/extras/diagutil.h** (C) or
 **pantheios/extras/diagutil.hpp** (C++) and wrap your program entry with
-`pantheios_extras_diagutil_main_leak_trace_invoke` or
-`pantheios::extras::diagutil::main_leak_trace::invoke`.
+`pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke` or
+`pantheios::extras::diagutil::main_memory_msvcrt_leak_trace::invoke`.
+
+The previous names `pantheios_extras_diagutil_main_leak_trace_invoke` and
+`pantheios::extras::diagutil::main_leak_trace::invoke` remain as deprecated
+aliases.
 
 With **CMake**, link the INTERFACE target
 `Pantheios.Extras.DiagUtil::Pantheios.Extras.DiagUtil` after
