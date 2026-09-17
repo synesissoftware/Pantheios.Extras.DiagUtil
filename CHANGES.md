@@ -1,6 +1,12 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
+## Unreleased
+
+* Applied **misc-dev-scripts** **0.6.0** editor/Git/`.sis` drop-in templates on **boilerplate**;
+* Restored historical **.gitignore** patterns as a sorted union with **misc-dev-scripts** gold section layout;
+
+
 ## 0.1.3-alpha2 - 4th September 2026
 
 * Renamed the MSVCRT CRT leak-trace API to **main_memory_msvcrt_leak_trace** (`pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke`, `pantheios::extras::diagutil::main_memory_msvcrt_leak_trace::invoke`);
