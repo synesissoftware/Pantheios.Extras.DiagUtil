@@ -5,7 +5,7 @@
  *          Pantheios.Extras.DiagUtil library.
  *
  * Created: 6th January 2011
- * Updated: 4th September 2026
+ * Updated: 17th September 2026
  *
  * Home:    http://www.pantheios.org/
  *
@@ -57,8 +57,8 @@
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MINOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     4
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 2
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     5
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
@@ -91,8 +91,13 @@
  * The minor version number of Pantheios.Extras.DiagUtil
  */
 
-/** \def PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION
- * The revision version number of Pantheios.Extras.DiagUtil
+/** \def PANTHEIOS_EXTRAS_DIAGUTIL_VER_PATCH
+ * The patch version number of Pantheios.Extras.DiagUtil
+ */
+
+/** \def PANTHEIOS_EXTRAS_DIAGUTIL_VER_ALPHABETA
+ * The alpha/beta number of Pantheios.Extras.DiagUtil, in the range 1-0xFE
+ * for prerelease versions, and 0xFF for a released version
  */
 
 /** \def PANTHEIOS_EXTRAS_DIAGUTIL_VER
@@ -110,9 +115,20 @@
 
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MAJOR                 0
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MINOR                 1
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION              3
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PATCH                 3
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_ALPHABETA             0x42
 
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER                       PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_ALPHA_2
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER \
+    (0\
+        |   (   PANTHEIOS_EXTRAS_DIAGUTIL_VER_MAJOR       << 24   ) \
+        |   (   PANTHEIOS_EXTRAS_DIAGUTIL_VER_MINOR       << 16   ) \
+        |   (   PANTHEIOS_EXTRAS_DIAGUTIL_VER_PATCH       <<  8   ) \
+        |   (   PANTHEIOS_EXTRAS_DIAGUTIL_VER_ALPHABETA   <<  0   ) \
+    )
+
+#ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_REVISION             PANTHEIOS_EXTRAS_DIAGUTIL_VER_PATCH
+#endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
 /* /////////////////////////////////////////////////////////////////////////
