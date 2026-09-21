@@ -1,8 +1,9 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:    pantheios/extras/diagutil/main_leak_trace.h
+ * File:    pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h
  *
- * Purpose: Deprecated alias of
- *          pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke().
+ * Purpose: Definition of the
+ *          pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke()
+ *          function.
  *
  * Created: 28th December 2010
  * Updated: 4th September 2026
@@ -41,16 +42,16 @@
  * ////////////////////////////////////////////////////////////////////// */
 
 
-/** \file pantheios/extras/diagutil/main_leak_trace.h
- * [C only] Deprecated alias of
- *   pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(), as
- *   part of the
+/** \file pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h
+ * [C only] Definition of the
+ *   pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke()
+ *   function, as part of the
  *   \ref group__library__pantheios_extras_diagutil "Pantheios.Extras.DiagUtil"
  *   library.
  */
 
-#ifndef PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE
-#define PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE
+#ifndef PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE
+#define PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE
 
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -58,10 +59,10 @@
  */
 
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MAJOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_MINOR    2
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_REVISION 0
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE_EDIT     8
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE_MAJOR      1
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE_MINOR      0
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE_REVISION   0
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE_EDIT       1
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
@@ -69,21 +70,49 @@
  * includes
  */
 
-#include <pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h>
+#include <pantheios/extras/diagutil/internal/common.h>
+
+#if defined(_MSC_VER) && \
+    defined(_DEBUG)
+# include <crtdbg.h>
+#endif /* _MSC_VER && _DEBUG */
+
+#ifdef __cplusplus
+# include <exception>
+#endif /* __cplusplus */
 
 
 /* /////////////////////////////////////////////////////////////////////////
  * API Functions
  */
 
-/** [DEPRECATED] Equivalent to
- * \link pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke()\endlink.
+/** Invokes the given <code>main()</code>-like function and, when compiling
+ * in the presence of _MSC_VER and _DEBUG, traces any MSVCRT memory
+ * resources leaked by the call.
  *
  * \ingroup group__library__pantheios_extras_diagutil_memleaktrace
  *
- * \deprecated This function is deprecated and will be removed from a future
- *   version of Pantheios.Extras.DiagUtil; instead use
- *   pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke().
+ * Consider the following example:
+ *
+\htmlonly
+<pre>
+  int main0(int argc, char* argv[])
+  {
+    malloc(1);
+
+    return EXIT_SUCCESS;
+  }
+
+  int main(int argc, char* argv[])
+  {
+      return pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(argc, argv, main0);
+  }
+</pre>
+\endhtmlonly
+ *
+ * The memory leaked by the call to <code>malloc()</code> will be reported
+ * by
+ * pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke().
  *
  * \param argc The <code>argc</code> parameter of <code>main()</code>.
  * \param argv The <code>argv</code> parameter of <code>main()</code>.
@@ -95,15 +124,46 @@
  * \pre (NULL != pfnMain)
  */
 STLSOFT_INLINE
-PANTHEIOS_DECLARE_DEPRECATION("function", pantheios_extras_diagutil_main_leak_trace_invoke, pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke)
 int
-pantheios_extras_diagutil_main_leak_trace_invoke(
+pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(
     int                 argc
 ,   char**              argv
 ,   int (STLSOFT_CDECL* pfnMain)(int, char*[])
 )
 {
-    return pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(argc, argv, pfnMain);
+#if defined(_MSC_VER) && \
+    defined(_DEBUG)
+
+    int             r;
+    _CrtMemState    memState;
+
+    _CrtMemCheckpoint(&memState);
+
+# ifdef __cplusplus
+    try
+    {
+# endif /* __cplusplus */
+
+        r = pfnMain(argc, argv);
+
+        _CrtMemDumpAllObjectsSince(&memState);
+# ifdef __cplusplus
+    }
+    catch (std::exception&)
+    {
+        _CrtMemDumpAllObjectsSince(&memState);
+
+        throw;
+    }
+# endif /* __cplusplus */
+
+    return r;
+
+#else /* ? _MSC_VER && _DEBUG */
+
+    return pfnMain(argc, argv);
+
+#endif /* _MSC_VER && _DEBUG */
 }
 
 
@@ -115,6 +175,6 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
 # pragma once
 #endif /* STLSOFT_CF_PRAGMA_ONCE_SUPPORT */
 
-#endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_LEAK_TRACE */
+#endif /* !PANTHEIOS_EXTRAS_DIAGUTIL_INCL_PANTHEIOS_EXTRAS_DIAGUTIL_H_MAIN_MEMORY_MSVCRT_LEAK_TRACE */
 
 /* ///////////////////////////// end of file //////////////////////////// */

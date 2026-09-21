@@ -13,7 +13,7 @@ Header-only **C** and **C++** library in the **Pantheios.Extras** namespace that
 ## Table of Contents <!-- omit in toc -->
 
 - [Introduction](#introduction)
-  - [Why main leak-trace](#why-main-leak-trace)
+  - [Why MSVCRT main leak-trace](#why-msvcrt-main-leak-trace)
   - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Components](#components)
@@ -36,7 +36,7 @@ Header-only **C** and **C++** library in the **Pantheios.Extras** namespace that
 That keeps application `main()` free of `#if`/`crtdbg.h` boilerplate while remaining compatible with the usual Extras nesting — for example wrapping **Pantheios.Extras.Main** and/or command-line helpers so leak tracing runs while the diagnostic logging layer is still initialised.
 
 
-### Why main leak-trace
+### Why MSVCRT main leak-trace
 
 Hand-rolled CRT leak checkpoints in `main()` are noisy and easy to get wrong:
 
@@ -69,7 +69,7 @@ Detailed instructions — via **CMake**, via bundling — are provided in the ac
 #include <pantheios/extras/diagutil.h>
 
 int
-pantheios_extras_diagutil_main_leak_trace_invoke(
+pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(
     int                 argc
 ,   char**              argv
 ,   int (STLSOFT_CDECL* pfnMain)(int, char*[])
@@ -84,11 +84,11 @@ pantheios_extras_diagutil_main_leak_trace_invoke(
 namespace pantheios {
 namespace extras {
 namespace diagutil {
-namespace main_leak_trace {
+namespace main_memory_msvcrt_leak_trace {
 
 int invoke(int argc, char** argv, int (STLSOFT_CDECL* pfnMain)(int, char*[]));
 
-} // namespace main_leak_trace
+} // namespace main_memory_msvcrt_leak_trace
 } // namespace diagutil
 } // namespace extras
 } // namespace pantheios
@@ -97,7 +97,7 @@ int invoke(int argc, char** argv, int (STLSOFT_CDECL* pfnMain)(int, char*[]));
 
 ## Examples
 
-Examples are provided in the `examples` directory (`example.c.main_leak_trace.1`, `example.cpp.main_leak_trace.1`).
+Examples are provided in the `examples` directory (`example.c.main_memory_msvcrt_leak_trace.1`, `example.cpp.main_memory_msvcrt_leak_trace.1`). The previous APIs `pantheios_extras_diagutil_main_leak_trace_invoke` and `pantheios::extras::diagutil::main_leak_trace::invoke` remain as deprecated aliases.
 
 
 ## Project Information

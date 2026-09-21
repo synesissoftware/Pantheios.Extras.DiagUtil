@@ -214,6 +214,9 @@ jobs:
           test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil.h"
           test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil.hpp"
           test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil/main_leak_trace.h"
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil/main_leak_trace.hpp"
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h"
+          test -f "${INSTALL_PREFIX}/include/pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.hpp"
           test -f "${INSTALL_PREFIX}/lib/cmake/pantheios.extras.diagutil/pantheios.extras.diagutil-config.cmake"
 
       - name: Configure and run install smoke consumer
@@ -249,7 +252,7 @@ jobs:
 
           int main(int argc, char** argv)
           {
-              return pantheios_extras_diagutil_main_leak_trace_invoke(
+              return pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(
                   argc, argv, program);
           }
           EOF
