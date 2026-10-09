@@ -4,7 +4,7 @@
  * Purpose: Unit tests for Pantheios.Extras.DiagUtil version macros.
  *
  * Created: 2nd September 2026
- * Updated: 4th September 2026
+ * Updated: 9th October 2026
  *
  * ////////////////////////////////////////////////////////////////////// */
 
@@ -36,9 +36,9 @@ test_version_composite(void)
             |   (   alphabeta                               <<  0   )
         );
 
-    XTESTS_TEST_INTEGER_EQUAL(0x42, alphabeta);
+    XTESTS_TEST_INTEGER_EQUAL(0x81, alphabeta);
     XTESTS_TEST_INTEGER_EQUAL(computed, PANTHEIOS_EXTRAS_DIAGUTIL_VER);
-    XTESTS_TEST_INTEGER_EQUAL(PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_ALPHA_2, PANTHEIOS_EXTRAS_DIAGUTIL_VER);
+    XTESTS_TEST_INTEGER_EQUAL(PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_BETA_1, PANTHEIOS_EXTRAS_DIAGUTIL_VER);
     XTESTS_TEST_INTEGER_EQUAL(0x00010342, PANTHEIOS_EXTRAS_DIAGUTIL_VER);
 }
 

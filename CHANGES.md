@@ -1,8 +1,13 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
-## Unreleased
+## 0.1.3-beta1 - 9th October 2026
 
+* Applied **misc-dev-scripts** **0.6.0** editor/Git/`.sis` drop-in templates on **boilerplate**;
+* Restored historical **.gitignore** patterns as a sorted union with **misc-dev-scripts** gold section layout;
+* Brought the CMake helper scripts to the **misc-dev-scripts** `cmake-helpers` gold (SisClr colour, `cmake --build`, native `.cmd` runners); **run_all_unit_tests.sh** is now unit-only and **run_all_automated_tests.sh** is the aggregate; removed **execute_performance_tests.sh**;
+* Renamed the scratch version reporter target to `test.scratch.versions`, which now also reports the **Pantheios** and **STLSoft** versions as efferent dependencies;
+* Changed CI to run component tests via **run_all_component_tests.sh**;
 * Applied **misc-dev-scripts** **0.6.0** editor/Git/`.sis` drop-in templates on **boilerplate**;
 * Restored historical **.gitignore** patterns as a sorted union with **misc-dev-scripts** gold section layout;
 
