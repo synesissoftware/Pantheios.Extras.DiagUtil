@@ -4,7 +4,7 @@
  * Purpose: Main C header for the Pantheios.Extras.DiagUtil library.
  *
  * Created: 29th December 2010
- * Updated: 2nd September 2026
+ * Updated: 4th September 2026
  *
  * Home:    http://www.pantheios.org/
  *
@@ -56,8 +56,8 @@
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_MINOR    0
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_REVISION 2
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_EDIT     3
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_REVISION 3
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_H_DIAGUTIL_EDIT     4
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
@@ -67,7 +67,7 @@
 
 #include <pantheios/extras/diagutil/internal/common.h>
 
-#include <pantheios/extras/diagutil/main_leak_trace.h>
+#include <pantheios/extras/diagutil/main_memory_msvcrt_leak_trace.h>
 
 
 /* /////////////////////////////////////////////////////////////////////////

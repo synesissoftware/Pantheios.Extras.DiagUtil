@@ -1,16 +1,17 @@
 /* /////////////////////////////////////////////////////////////////////////
- * File:    example.c.main_leak_trace.1.c
+ * File:    example.cpp.main_memory_msvcrt_leak_trace.1.cpp
  *
- * Purpose: Implementation file for the example.c.main_leak_trace.1 library.
+ * Purpose: Implementation file for the
+ *          example.cpp.main_memory_msvcrt_leak_trace.1 library.
  *
  * Created: 6th January 2011
- * Updated: 23rd October 2024
+ * Updated: 4th September 2026
  *
  * ////////////////////////////////////////////////////////////////////// */
 
 
-/* Pantheios.Extras.DiagUtil header files */
-#include <pantheios/extras/diagutil.h>
+/* Pantheios::Extras::DiagUtil header files */
+#include <pantheios/extras/diagutil.hpp>
 
 /* STLSoft header files */
 #include <stlsoft/stlsoft.h>
@@ -44,9 +45,8 @@ int main0(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    return pantheios_extras_diagutil_main_leak_trace_invoke(argc, argv, main0);
+    return ::pantheios::extras::diagutil::main_memory_msvcrt_leak_trace::invoke(argc, argv, main0);
 }
 
 
 /* ///////////////////////////// end of file //////////////////////////// */
-

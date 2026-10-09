@@ -1,7 +1,7 @@
 /* /////////////////////////////////////////////////////////////////////////
  * File:        implicit_link.cpp
  *
- * Purpose:     Implicit link file for the example.cpp.main_leak_trace.1 library.
+ * Purpose:     Implicit link file for the example.cpp.main_memory_msvcrt_leak_trace.1 library.
  *
  * Created:     6th January 2011
  * Updated:     10th September 2015
