@@ -10,7 +10,7 @@
 
 | Date                | News Item                                           | Details                                          |
 | ------------------- | --------------------------------------------------- | ------------------------------------------------ |
-| 14th October 2026   | [**Pantheios.Extras.DiagUtil** 0.1.3-beta2](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta2) | Tip helpers; `VER_RELSTATUS`; sisdeps/xbit/`.cmd` CI |
+| 14th October 2026   | [**Pantheios.Extras.DiagUtil** 0.1.3-beta2](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta2) | Tip helpers; `VER_RELSTATUS`; CI **woad** before Pantheios |
 | 9th October 2026    | [**Pantheios.Extras.DiagUtil** 0.1.3-beta1](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta1) | SisClr helpers; `test.scratch.versions` reporter |
 | 4th September 2026  | Pantheios.Extras.DiagUtil 0.1.3-alpha2              | MSVCRT leak-trace rename                         |
 | 2nd September 2026  | Pantheios.Extras.DiagUtil 0.1.3-alpha1              | modernisation                                    |

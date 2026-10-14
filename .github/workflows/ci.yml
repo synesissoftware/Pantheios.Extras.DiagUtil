@@ -113,15 +113,15 @@ jobs:
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-make
 
-      # Public headers include Pantheios and STLSoft; b64 is optional for
-      # Pantheios and is omitted here. xTests is test-only.
-      - name: Install runtime dependencies (STLSoft + Pantheios)
+      # Public headers include Pantheios and STLSoft; woad is required to
+      # configure Pantheios; b64 is optional and omitted. xTests is test-only.
+      - name: Install runtime dependencies (STLSoft + woad + Pantheios)
         uses: ./.github/actions/install-sis-deps
         with:
           build-type: ${{ env.BUILD_TYPE }}
           c-compiler: ${{ matrix.c_compiler }}
           cpp-compiler: ${{ matrix.cpp_compiler }}
-          dependencies: STLSoft Pantheios
+          dependencies: STLSoft woad Pantheios
           toolchain: ${{ matrix.toolchain }}
 
       - name: Configure

@@ -8,6 +8,7 @@
 * Gold-copied tip **`run_all_examples.*`** / **`run_all_scratch_tests.*`** / **`run_all_unit_tests.sh`** from **misc-dev-scripts** `cmake-helpers` `@0754c23` (discovery exclusions; scratch **`--skip-interactive`**);
 * Set **`test.scratch.versions`** **`PROGRAM_NAME`** to **`test.scratch.versions`**;
 * Added **`.github/actions/install-sis-deps`**; **ci-cell** uses **`${{ env.SIS_DEPS }}`**, execute-bit restore after artifact download, and Windows **`shell: cmd`** dogfood of **`run_all_*.cmd`**;
+* Install **woad** before **Pantheios** in CI (**`install-sis-deps`**) so tip Pantheios configure succeeds;
 
 
 ## 0.1.3-beta1 - 9th October 2026
