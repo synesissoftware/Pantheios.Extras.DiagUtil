@@ -10,9 +10,6 @@
 #include <stdlib.h>
 
 
-#define PROGRAM_NAME                                        "versions"
-
-
 template<
     typename T_stream
 ,   typename T_integer

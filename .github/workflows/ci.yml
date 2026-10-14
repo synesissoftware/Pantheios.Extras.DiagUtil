@@ -1,3 +1,8 @@
+#
+# Created: 2nd September 2026
+# Updated: 14th October 2026
+#
+
 name: CI
 
 on:
@@ -11,6 +16,9 @@ on:
       - rc2
       - rc3
   pull_request:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -46,10 +54,13 @@ jobs:
             os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+          # `toolchain` carries what is not a compiler: MinGW needs its own
+          # generator and PATH, but the compilers it drives are gcc and g++
           - id: windows-mingw
             os: windows-latest
-            c_compiler: mingw
+            c_compiler: gcc
             cpp_compiler: g++
+            toolchain: mingw
     uses: ./.github/workflows/ci-cell.yml
     with:
       cell-id: ${{ matrix.id }}
@@ -57,10 +68,11 @@ jobs:
       c-compiler: ${{ matrix.c_compiler }}
       cpp-compiler: ${{ matrix.cpp_compiler }}
       build-type: Release
+      toolchain: ${{ matrix.toolchain }}
     secrets: inherit
 
   install-smoke:
-    name: Install smoke (${{ matrix.os }}, ${{ matrix.c_compiler }})
+    name: Install smoke (${{ matrix.os }}, ${{ matrix.toolchain || matrix.c_compiler }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -79,8 +91,9 @@ jobs:
             c_compiler: cl
             cpp_compiler: cl
           - os: windows-latest
-            c_compiler: mingw
+            c_compiler: gcc
             cpp_compiler: g++
+            toolchain: mingw
 
     steps:
       - uses: actions/checkout@v4
@@ -90,7 +103,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y clang
 
       - name: Setup MSYS2 MinGW
-        if: runner.os == 'Windows' && matrix.c_compiler == 'mingw'
+        if: runner.os == 'Windows' && matrix.toolchain == 'mingw'
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
@@ -100,59 +113,16 @@ jobs:
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-make
 
-      - name: Install runtime dependencies (STLSoft + Pantheios)
-        shell: bash
-        run: |
-          set -euxo pipefail
-
-          DEPS="${RUNNER_TEMP}/sis-deps"
-          mkdir -p "$DEPS"
-          echo "DEPS=$DEPS" >> "$GITHUB_ENV"
-
-          cmake_configure_and_install() {
-            local src="$1"
-            local build="$2"
-
-            if [ "${{ matrix.c_compiler }}" = "cl" ]; then
-              cmake -S "$src" -B "$build" \
-                -DCMAKE_DISABLE_FIND_PACKAGE_MFC=TRUE \
-                -DCMAKE_INSTALL_PREFIX="$DEPS" \
-                -DCMAKE_PREFIX_PATH="$DEPS" \
-                -DBUILD_EXAMPLES=OFF \
-                -DBUILD_TESTING=OFF
-              cmake --build "$build" --config "${{ env.BUILD_TYPE }}" --parallel
-              cmake --install "$build" --config "${{ env.BUILD_TYPE }}"
-            elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
-              export PATH="/mingw64/bin:$PATH"
-              cmake -S "$src" -B "$build" -G "MinGW Makefiles" \
-                -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
-                -DCMAKE_INSTALL_PREFIX="$DEPS" \
-                -DCMAKE_PREFIX_PATH="$DEPS" \
-                -DBUILD_EXAMPLES=OFF \
-                -DBUILD_TESTING=OFF
-              cmake --build "$build" --parallel 2
-              cmake --install "$build"
-            else
-              cmake -S "$src" -B "$build" \
-                -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
-                -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
-                -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
-                -DCMAKE_INSTALL_PREFIX="$DEPS" \
-                -DCMAKE_PREFIX_PATH="$DEPS" \
-                -DBUILD_EXAMPLES=OFF \
-                -DBUILD_TESTING=OFF
-              cmake --build "$build" --parallel
-              cmake --install "$build"
-            fi
-          }
-
-          # b64 is optional for Pantheios; omit it here so the smoke matches
-          # Pantheios's own install-smoke (STLSoft-only runtime deps).
-          git clone --depth 1 https://github.com/synesissoftware/STLSoft "${RUNNER_TEMP}/stlsoft-src"
-          cmake_configure_and_install "${RUNNER_TEMP}/stlsoft-src" "${RUNNER_TEMP}/stlsoft-build"
-
-          git clone --depth 1 https://github.com/synesissoftware/Pantheios "${RUNNER_TEMP}/pantheios-src"
-          cmake_configure_and_install "${RUNNER_TEMP}/pantheios-src" "${RUNNER_TEMP}/pantheios-build"
+      # Public headers include Pantheios and STLSoft; woad is required to
+      # configure Pantheios; b64 is optional and omitted. xTests is test-only.
+      - name: Install runtime dependencies (STLSoft + woad + Pantheios)
+        uses: ./.github/actions/install-sis-deps
+        with:
+          build-type: ${{ env.BUILD_TYPE }}
+          c-compiler: ${{ matrix.c_compiler }}
+          cpp-compiler: ${{ matrix.cpp_compiler }}
+          dependencies: STLSoft woad Pantheios
+          toolchain: ${{ matrix.toolchain }}
 
       - name: Configure
         shell: bash
@@ -160,16 +130,17 @@ jobs:
           set -euo pipefail
           if [ "${{ matrix.c_compiler }}" = "cl" ]; then
             cmake -B build -S . \
-              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DCMAKE_DISABLE_FIND_PACKAGE_MFC=TRUE \
+              -DCMAKE_PREFIX_PATH="${{ env.SIS_DEPS }}" \
               -DBUILD_EXAMPLES=OFF \
               -DBUILD_TESTING=OFF
-          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+          elif [ "${{ matrix.toolchain }}" = "mingw" ]; then
             export PATH="/mingw64/bin:$PATH"
-            cmake -B build -G "MinGW Makefiles" \
+            cmake -B build -S . -G "MinGW Makefiles" \
               -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
-              -DCMAKE_C_COMPILER=gcc \
-              -DCMAKE_CXX_COMPILER=g++ \
-              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+              -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+              -DCMAKE_PREFIX_PATH="${{ env.SIS_DEPS }}" \
               -DBUILD_EXAMPLES=OFF \
               -DBUILD_TESTING=OFF
           else
@@ -177,7 +148,7 @@ jobs:
               -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
               -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
               -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
-              -DCMAKE_PREFIX_PATH="${DEPS}" \
+              -DCMAKE_PREFIX_PATH="${{ env.SIS_DEPS }}" \
               -DBUILD_EXAMPLES=OFF \
               -DBUILD_TESTING=OFF
           fi
@@ -188,7 +159,7 @@ jobs:
           set -euo pipefail
           if [ "${{ matrix.c_compiler }}" = "cl" ]; then
             cmake --build build --config "${{ env.BUILD_TYPE }}" --parallel
-          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+          elif [ "${{ matrix.toolchain }}" = "mingw" ]; then
             export PATH="/mingw64/bin:$PATH"
             cmake --build build --parallel 2
           else
@@ -256,17 +227,18 @@ jobs:
                   argc, argv, program);
           }
           EOF
-          PREFIX_PATH="${INSTALL_PREFIX};${DEPS}"
           if [ "${{ matrix.c_compiler }}" = "cl" ]; then
             cmake -S "$CONSUMER" -B consumer-build \
-              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+              -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX};${{ env.SIS_DEPS }}"
             cmake --build consumer-build --config "${{ env.BUILD_TYPE }}" --parallel
             consumer-build/${{ env.BUILD_TYPE }}/consumer.exe
-          elif [ "${{ matrix.c_compiler }}" = "mingw" ]; then
+          elif [ "${{ matrix.toolchain }}" = "mingw" ]; then
             export PATH="/mingw64/bin:$PATH"
             cmake -S "$CONSUMER" -B consumer-build -G "MinGW Makefiles" \
               -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
-              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+              -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+              -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+              -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX};${{ env.SIS_DEPS }}"
             cmake --build consumer-build --parallel 2
             consumer-build/consumer.exe
           else
@@ -274,7 +246,7 @@ jobs:
               -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
               -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
               -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
-              -DCMAKE_PREFIX_PATH="${PREFIX_PATH}"
+              -DCMAKE_PREFIX_PATH="${INSTALL_PREFIX};${{ env.SIS_DEPS }}"
             cmake --build consumer-build --parallel
             consumer-build/consumer
           fi
