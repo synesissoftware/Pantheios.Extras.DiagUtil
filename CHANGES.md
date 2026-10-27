@@ -1,6 +1,11 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
+## 0.1.3-beta3 - 27th October 2026
+
+* Defined `HAS_<Pkg>` and `HAS_<PKG>` when a Synesis package other than **STLSoft** is detected;
+
+
 ## 0.1.3-beta2 - 14th October 2026
 
 * Advanced the library version to **0.1.3-beta2** (`PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_BETA_2`, `PANTHEIOS_EXTRAS_DIAGUTIL_VER_RELSTATUS` **0x82**);

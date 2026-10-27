@@ -1,8 +1,17 @@
 
 #include <pantheios/extras/diagutil.h>
+
+#ifdef HAS_b64
+# include <b64/b64.h>
+#endif
+
 #include <pantheios/pantheios.h>
 
 #include <stlsoft/stlsoft.h>
+
+#ifdef HAS_xTests
+# include <xtests/xtests.h>
+#endif
 
 #include <iomanip>
 #include <iostream>
@@ -48,13 +57,32 @@ version(
 
 int main(int /* argc */, char* /* argv */[])
 {
+    int efferents_count = 0;
+
     {
         unsigned const libver = PANTHEIOS_EXTRAS_DIAGUTIL_VER;
 
         version(std::cout, "", "Pantheios.Extras.DiagUtil", "PANTHEIOS_EXTRAS_DIAGUTIL_VER", libver);
     }
 
-    std::cout << "\n" << "efferent dependencies:" << std::endl;
+#ifdef HAS_b64
+
+    if (0 == efferents_count++)
+    {
+        std::cout << "\n" << "efferent dependencies:" << std::endl;
+    }
+
+    {
+        unsigned const libver = B64_VER;
+
+        version(std::cout, "\t", "b64", "B64_VER", libver);
+    }
+#endif
+
+    if (0 == efferents_count++)
+    {
+        std::cout << "\n" << "efferent dependencies:" << std::endl;
+    }
 
     {
         unsigned const libver = PANTHEIOS_VER;
@@ -62,11 +90,30 @@ int main(int /* argc */, char* /* argv */[])
         version(std::cout, "\t", "Pantheios", "PANTHEIOS_VER", libver);
     }
 
+    if (0 == efferents_count++)
+    {
+        std::cout << "\n" << "efferent dependencies:" << std::endl;
+    }
+
     {
         unsigned const libver = _STLSOFT_VER;
 
         version(std::cout, "\t", "STLSoft", "_STLSOFT_VER", libver);
     }
+
+#ifdef HAS_xTests
+
+    if (0 == efferents_count++)
+    {
+        std::cout << "\n" << "efferent dependencies:" << std::endl;
+    }
+
+    {
+        unsigned const libver = _XTESTS_VER;
+
+        version(std::cout, "\t", "xTests", "_XTESTS_VER", libver);
+    }
+#endif
 
     return EXIT_SUCCESS;
 }
