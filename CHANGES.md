@@ -4,7 +4,10 @@
 ## 0.1.3-beta4 - 31st October 2026
 
 * testing:
+  * `File:` labels under **examples** name the project-relative path;
   * `File:` labels under **test** name the project-relative path;
+* build:
+  * the **Check test names** job runs **STLSoft** **check_unit_test_names.rb** over **examples** and **test**;
 
 
 ## 0.1.3-beta3 - 27th October 2026
