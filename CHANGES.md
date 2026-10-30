@@ -1,6 +1,12 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
+## 0.1.3-beta4 - 31st October 2026
+
+* testing:
+  * `File:` labels under **test** name the project-relative path;
+
+
 ## 0.1.3-beta3 - 27th October 2026
 
 * Defined `HAS_<Pkg>` and `HAS_<PKG>` when a Synesis package other than **STLSoft** is detected;
