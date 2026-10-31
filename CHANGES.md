@@ -1,7 +1,7 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
-## 0.1.3-beta4 - 31st October 2026
+## 0.1.3-beta4 - 1st November 2026
 
 * testing:
   * `File:` labels under **examples** name the project-relative path;
