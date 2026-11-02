@@ -29,7 +29,7 @@ The primary choice for installation is by use of **CMake**.
    $ git clone https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/
    ```
 
-2. Install **Pantheios** and **STLSoft** 1.11 (and **xTests** if you will
+2. Install **Pantheios** and **STLSoft** 1.11.5 (and **xTests** if you will
    build tests) via their own **CMake** scripts first.
 
 3. Prepare the CMake configuration, via the **prepare_cmake.sh** script.
