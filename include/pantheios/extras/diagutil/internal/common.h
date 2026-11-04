@@ -5,7 +5,7 @@
  *          Pantheios.Extras.DiagUtil library.
  *
  * Created: 6th January 2011
- * Updated: 2nd November 2026
+ * Updated: 4th November 2026
  *
  * Home:    http://www.pantheios.org/
  *
@@ -57,8 +57,8 @@
 #ifndef PANTHEIOS_DOCUMENTATION_SKIP_SECTION
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MAJOR    1
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_MINOR    1
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 4
-# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     11
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_REVISION 5
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PANTHEIOS_EXTRAS_DIAGUTIL_INTERNAL_H_COMMON_EDIT     12
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 
@@ -75,9 +75,9 @@
  * compatibility checks
  */
 
-#if PANTHEIOS_VER < 0x010001d9
-# error Pantheios.Extras.DiagUtil required Pantheios 1.0.1 beta 217, or later
-#endif /* !PANTHEIOS_NO_NAMESPACE */
+#if PANTHEIOS_VER < 0x010001FF
+# error Pantheios.Extras.DiagUtil requires Pantheios 1.0.1, or later
+#endif /* Pantheios version */
 
 /* /////////////////////////////////////////////////////////////////////////
  * version information
@@ -116,12 +116,13 @@
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_BETA_3         0x00010383
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_BETA_4         0x00010384
 # define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3_BETA_5         0x00010385
+# define PANTHEIOS_EXTRAS_DIAGUTIL_VER_0_1_3                0x000103FF
 #endif /* !PANTHEIOS_DOCUMENTATION_SKIP_SECTION */
 
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MAJOR                 0
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_MINOR                 1
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER_PATCH                 3
-#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_RELSTATUS             0x85
+#define PANTHEIOS_EXTRAS_DIAGUTIL_VER_RELSTATUS             0xFF
 
 #define PANTHEIOS_EXTRAS_DIAGUTIL_VER \
     (0\

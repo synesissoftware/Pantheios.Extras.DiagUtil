@@ -1,5 +1,10 @@
 define_example_program(test.scratch.versions main.cpp)
 
+target_link_libraries(test.scratch.versions
+	PRIVATE
+		woad::woad
+)
+
 if(b64_FOUND)
 
 	target_link_libraries(test.scratch.versions

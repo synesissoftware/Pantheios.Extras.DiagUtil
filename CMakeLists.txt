@@ -117,6 +117,9 @@ option(BUILD_TESTING "Build tests" ON)
 #
 # optional:
 # - b64 - may be needed by Pantheios;
+#
+# test-only:
+# - woad - already required by Pantheios; colours test.scratch.versions;
 # - xTests - required for testing;
 
 
@@ -204,6 +207,24 @@ if(DEFINED PANTHEIOS_INCLUDE_DIR)
 
 	include_directories(${PANTHEIOS_INCLUDE_DIR})
 endif()
+
+
+# ############################
+# woad
+
+if(BUILD_TESTING)
+
+	set(woad_REQUIRED_VERSION_ 0.2.1)
+
+	find_package(woad ${woad_REQUIRED_VERSION_} REQUIRED)
+
+	message("-- CMake package woad found (version ${woad_VERSION}; ${woad_REQUIRED_VERSION_} requested)")
+
+	add_compile_definitions(
+		HAS_woad
+		HAS_WOAD
+	)
+endif(BUILD_TESTING)
 
 
 # ############################

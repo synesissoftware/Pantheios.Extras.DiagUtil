@@ -1,6 +1,15 @@
 # Pantheios.Extras.DiagUtil - Changes <!-- omit in toc -->
 
 
+## 0.1.3 - 4th November 2026
+
+* compatibility:
+  * requires **STLSoft** 1.11.5 or later;
+  * requires **Pantheios** 1.0.1 or later;
+* testing:
+  * **test.scratch.versions** colours its report with **woad** and lists **woad** as an efferent dependency;
+
+
 ## 0.1.3-beta5 - 2nd November 2026
 
 * version:
