@@ -15,6 +15,7 @@ Header-only **C** and **C++** library in the **Pantheios.Extras** namespace that
 - [Introduction](#introduction)
   - [Why MSVCRT main leak-trace](#why-msvcrt-main-leak-trace)
   - [Dependencies](#dependencies)
+- [Developer Experience](#developer-experience)
 - [Installation](#installation)
 - [Components](#components)
   - [C API](#c-api)
@@ -54,6 +55,37 @@ Hand-rolled CRT leak checkpoints in `main()` are noisy and easy to get wrong:
 | Core library  | C / C++ headers | C — **pantheios/extras/diagutil.h**; C++ — **…/diagutil.hpp** | [Pantheios](https://github.com/synesissoftware/Pantheios), [STLSoft](https://github.com/synesissoftware/STLSoft/) |
 | Examples      | C / C++        | —                                                   | Pantheios, STLSoft |
 | Tests         | C              | —                                                   | Pantheios, STLSoft, [xTests](https://github.com/synesissoftware/xTests/) |
+
+
+## Developer Experience
+
+**STLSoft** 1.11.5 or later and **Pantheios** 1.0.1 or later must already be installed. **xTests** is required only when building the tests.
+
+Shortest build (headers and examples):
+
+```bash
+$ ./prepare_cmake.sh --disable-testing -v
+$ ./build_cmake.sh
+```
+
+```C
+#include <pantheios/extras/diagutil.h>
+
+static int main0(int argc, char* argv[])
+{
+    ((void)&argc);
+    ((void)&argv);
+
+    return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    return pantheios_extras_diagutil_main_memory_msvcrt_leak_trace_invoke(argc, argv, main0);
+}
+```
+
+Further installation steps are in [INSTALL.md](./INSTALL.md).
 
 
 ## Installation

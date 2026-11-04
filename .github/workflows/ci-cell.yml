@@ -58,15 +58,16 @@ jobs:
 
       # Dependency order is deliberate (not lexicographic): each package
       # configures against those already installed in the shared prefix.
-      # shwild precedes xTests; b64 is optional for Pantheios; woad precedes
-      # Pantheios (bec.AnsiConsole).
+      # woad precedes xTests (find_package woad 0.2) and Pantheios
+      # (bec.AnsiConsole); shwild precedes xTests; b64 is optional for
+      # Pantheios.
       - name: Install SIS dependencies
         uses: ./.github/actions/install-sis-deps
         with:
           build-type: ${{ inputs.build-type }}
           c-compiler: ${{ inputs.c-compiler }}
           cpp-compiler: ${{ inputs.cpp-compiler }}
-          dependencies: STLSoft shwild xTests b64 woad Pantheios
+          dependencies: STLSoft shwild woad xTests b64 Pantheios
           toolchain: ${{ inputs.toolchain }}
 
       - name: Configure

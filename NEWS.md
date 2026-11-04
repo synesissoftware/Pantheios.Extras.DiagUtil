@@ -10,6 +10,7 @@
 
 | Date                | News Item                                           | Details                                          |
 | ------------------- | --------------------------------------------------- | ------------------------------------------------ |
+| 4th November 2026   | Release of [Pantheios.Extras.DiagUtil 0.1.3](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3) | **STLSoft** 1.11.5; **Pantheios** 1.0.1; coloured **test.scratch.versions** |
 | 2nd November 2026   | Release of [Pantheios.Extras.DiagUtil 0.1.3-beta5](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta5) | **STLSoft** **1.11.5**; **xTests** **0.28.2** |
 | 1st November 2026   | Release of [Pantheios.Extras.DiagUtil 0.1.3-beta4](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta4) | `File:` labels use the project-relative path; **Check test names** |
 | 27th October 2026   | Release of [Pantheios.Extras.DiagUtil 0.1.3-beta3](https://github.com/synesissoftware/Pantheios.Extras.DiagUtil/releases/tag/0.1.3-beta3) | `HAS_<Pkg>` / `HAS_<PKG>` for detected Synesis packages |
